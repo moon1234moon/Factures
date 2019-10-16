@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="Factures.Views.CustomersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Factures.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             FontFamily="Times New Roman" FontSize="14"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        
+        <DataGrid AlternatingRowBackground="Gray" 
+                  Grid.Column="1" Grid.Row="1"
+                  CanUserAddRows="False"
+                  x:Name="Customers"
+                  ItemsSource="{Binding Customers}"
+                  MinWidth="100" MinHeight="50" 
+                  FontFamily="Times New Roman"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True"
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                <DataGridTextColumn Header="Type" Binding="{Binding Path=TypeName}" />
+                <DataGridTemplateColumn Header="View">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="BtnView"
+                                    cal:Message.Attach="[Event Click]=[BtnView($dataContext)]"
+                                    Content="View"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Edit">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="BtnEdit"
+                                    cal:Message.Attach="[Event Click]=[BtnEdit($dataContext)]"
+                                    Content="Edit"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Customer functionalities-->
+        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <!-- Buttons -->
+            <Button Grid.Column="1" Grid.Row="0" 
+                    x:Name="CreateNew"
+                    Margin="0,0,5,0">Create New</Button>
+            <TextBlock Grid.Column="2" Grid.Row="0"
+                       Margin="0,0,10,0"
+                       >Search:</TextBlock>
+            <TextBox x:Name="SearchText"
+                     Grid.Column="3" Grid.Row="0"
+                     MinWidth="200"
+                     Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10,0,10,0"/>
+            <TextBlock Grid.Column="4" Grid.Row="0"
+                       Margin="0,0,10,0"
+                       >Search Type:</TextBlock>
+            <ComboBox ItemsSource="{Binding SearchTypes}" Grid.Column="5" 
+                  Margin="0,0,10,0"
+                  MinWidth="100"
+                  Grid.Row="0"
+                  SelectedIndex="{Binding SelectedTypeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+            <Button Grid.Column="6" Grid.Row="0" 
+                    x:Name="Search"
+                    MinWidth="100"
+                    Margin="0,0,10,0">Search</Button>
+
+
+            <ContentControl Grid.Column="1" Grid.ColumnSpan="7"
+                        Grid.Row="1" Grid.RowSpan="3" x:Name="ActiveItem" />
+        </Grid>
+        
+    </Grid>
+</UserControl>

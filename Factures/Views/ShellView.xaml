@@ -1,0 +1,69 @@
+﻿<Window x:Class="Factures.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Factures.Views"
+        mc:Ignorable="d" 
+        FontFamily="Times New Roman" FontSize="14"
+        Title="Factures" Height="400" Width="400" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        
+        <!-- Row - 1 --><!-- Title -->
+        <TextBlock Text="{Binding Path=Title, Mode=OneWay}" 
+                   FontSize="20" FontWeight="SemiBold" 
+                   Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" 
+                   Margin="0,0,0,10"></TextBlock>
+
+        <!-- Row - 2 --> <!-- Menu -->
+        <Grid Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            
+            <Button x:Name="CustomerTypes" Grid.Column="0" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Customer Types</Button>
+            <Button x:Name="Customers" Grid.Column="1" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Customers</Button>
+            <Button x:Name="Products" Grid.Column="2" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Products</Button>
+            <Button x:Name="Factures" Grid.Column="3" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Factures</Button>
+            <Button x:Name="Receipts" Grid.Column="4" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Receipts</Button>
+            <Button x:Name="Seasons" Grid.Column="5" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Seasons</Button>
+            <Button x:Name="Sizes" Grid.Column="6" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Sizes</Button>
+            <Button x:Name="Conversions" Grid.Column="7" Grid.Row="1" Margin="0,0,5,0" MinWidth="100">Currency Conversions</Button>
+        </Grid>
+
+        <!-- Row - 3 --> <!-- Other Forms -->
+        <ContentControl Grid.Column="1" Grid.ColumnSpan="3" 
+                        Grid.Row="3" x:Name="ActiveItem" />
+    </Grid>
+</Window>

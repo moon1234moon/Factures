@@ -1,0 +1,234 @@
+﻿<UserControl x:Class="Factures.Views.ViewFactureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Factures.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d"
+             FontFamily="Times New Roman" FontSize="14"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <!-- Row 1 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Name:" />
+        <TextBox x:Name="Name" Grid.Column="2" Grid.Row="1"
+                 Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="{Binding Path=IsEnabled}"
+                 Margin="0,0,10,10"
+                 MinWidth="200"/>
+        <!-- Second Set (Columns 3 and 4) -->
+        <TextBlock Grid.Column="3" Grid.Row="1" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Number:" />
+        <TextBox x:Name="Number" Grid.Column="4" Grid.Row="1"
+                 Text="{Binding Path=Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,0,10,10"
+                 IsEnabled="{Binding Path=IsEnabled}"
+                 MinWidth="200"/>
+        <!-- Third Set (Columns 5 and 6) -->
+        <TextBlock Grid.Column="5" Grid.Row="1" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Date:" />
+        <DatePicker Grid.Column="6" Grid.Row="1"
+                    IsEnabled="{Binding Path=IsEnabled}"
+                    Text="{Binding Path=Delivery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0,0,10,10" />
+
+        <!-- Row 2 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <TextBlock Grid.Column="1" Grid.Row="2" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Customer:" />
+        <ComboBox ItemsSource="{Binding Customers}" Grid.Column="2" 
+                  Margin="0,0,10,10"
+                  IsEnabled="{Binding Path=IsCustomerEnabled, Mode=OneWay}"
+                  Grid.Row="2"
+                  SelectedIndex="{Binding SelectedCustomer, Mode=OneWay}"
+                  SelectedItem="{Binding Customer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <!-- Second Set (Columns 3 and 4) -->
+        <TextBlock Grid.Column="3" Grid.Row="2" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Season:" />
+        <ComboBox ItemsSource="{Binding Seasons}" Grid.Column="4" 
+                  Margin="0,0,10,10"
+                  Grid.Row="2"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  SelectedIndex="{Binding SelectedSeason, Mode=OneWay}"
+                  SelectedItem="{Binding Season, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Year}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <!-- Third Set (Columns 5 and 6) -->
+        <TextBlock Grid.Column="5" Grid.Row="2" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Cleared:" />
+        <CheckBox Grid.Column="6" Grid.Row="2"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="Cleared"/>
+
+        <!-- Row 3 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <TextBlock Grid.Column="1" Grid.Row="3" Margin="0,10,10,10"
+                   FontWeight="SemiBold" Text="Product:" />
+        <ComboBox ItemsSource="{Binding Products}" Grid.Column="2" 
+                  Margin="0,10,10,10"
+                  Grid.Row="3"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  SelectedItem="{Binding Product, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <!-- Second Set (Columns 3 and 4) -->
+        <TextBlock Grid.Column="3" Grid.Row="3" Margin="0,10,10,10"
+                   FontWeight="SemiBold" Text="Size:" />
+        <ComboBox ItemsSource="{Binding Sizes}" Grid.Column="4" 
+                  Margin="0,10,10,10"
+                  Grid.Row="3"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  SelectedItem="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Size}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <!-- Third Set (Columns 5 and 6) -->
+        <TextBlock Grid.Column="5" Grid.Row="3" Margin="0,10,10,10"
+                   FontWeight="SemiBold" Text="Quantity:" />
+        <TextBox x:Name="Quantity" Grid.Column="6" Grid.Row="3"
+                 Text="{Binding Path=Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,10,10,10"
+                 IsEnabled="{Binding Path=IsEnabled}"
+                 MinWidth="200"/>
+
+        <!-- Row 4 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <TextBlock Grid.Column="1" Grid.Row="4" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Unit Price:" />
+        <TextBox x:Name="Price" Grid.Column="2" Grid.Row="4"
+                 Text="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,0,10,10"
+                 IsEnabled="{Binding Path=IsEnabled}"
+                 MinWidth="200"/>
+        <!-- Second Set (Columns 3 and 4) -->
+        <TextBlock Grid.Column="3" Grid.Row="4" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Currency:" />
+        <ComboBox ItemsSource="{Binding Currencies}" Grid.Column="4" 
+                  Margin="0,0,10,10"
+                  Grid.Row="4"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  SelectedIndex="{Binding SelectedCurrency, Mode=OneWay}"
+                  SelectedItem="{Binding Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Symbol}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <!-- Third Set (Columns 5 and 6) -->
+        <TextBlock Grid.Column="5" Grid.Row="4" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Total:" />
+        <TextBox x:Name="Total" Grid.Column="6" Grid.Row="4"
+                 Text="{Binding Path=Total, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,0,10,10"
+                 IsEnabled="False"
+                 MinWidth="200"/>
+
+        <!-- Row 5 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <TextBlock Grid.Column="1" Grid.Row="5" Margin="0,0,10,10"
+                   FontWeight="SemiBold" Text="Add Product:" />
+        <Button Grid.Column="2" Grid.Row="5" 
+                x:Name="AddProduct"
+                IsEnabled="{Binding Path=IsEnabled}"
+                Margin="0,0,10,10"
+                FontWeight="SemiBold">Add Product</Button>
+
+        <!-- Row 6 -->
+        <!-- First Set (Columns 1 and 2) -->
+        <DataGrid AlternatingRowBackground="Gray" 
+                  Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="6"
+                  x:Name="FactureDetailsGrid" 
+                  ItemsSource="{Binding FactureDetails, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  MinWidth="100" MinHeight="50" 
+                  FontFamily="Times New Roman"
+                  IsEnabled="{Binding Path=IsEnabled}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product" Binding="{Binding Path=ProductName}" />
+                <DataGridTextColumn Header="Size" Binding="{Binding Path=SizeSymbol}" />
+                <DataGridTextColumn Header="Price" Binding="{Binding Path=FullPrice}" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Path=Quantity}" />
+                <DataGridTextColumn Header="Total" Binding="{Binding Path=Total}" />
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="DeleteDetail"
+                                    IsEnabled="{Binding Path=IsEnabled}"
+                                    cal:Message.Attach="[Event Click]=[DeleteDetail($dataContext)]"
+                                    Content="Delete"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Row 7 -->
+        <!-- First Set (Columns 1, 2, 3, 4, 5 and 6) -->
+        <Button Grid.Column="1"
+                Grid.Row="7"
+                Grid.ColumnSpan="3"
+                Width="300"
+                x:Name="Save"
+                Content="{Binding Path=BtnSaveText}"
+                Margin="80, 25, 0, 0">
+        </Button>
+        <Button Grid.Column="4"
+                Grid.Row="7"
+                Grid.ColumnSpan="3"
+                Width="300"
+                x:Name="Delete"
+                IsEnabled="{Binding Path=IsEnabled}"
+                Margin="0, 25, 0, 0">
+            Delete Facture
+        </Button>
+
+
+    </Grid>
+</UserControl>
