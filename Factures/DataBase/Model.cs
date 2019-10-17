@@ -126,14 +126,20 @@ namespace Factures.DataBase
                 if (element.Equals(last))
                 {
                     if (element.Value[0] == "number")
-                        query += element.Key + " = " + element.Value[1] + " ";
+                        if (element.Value[1] != "NULL")
+                            query += element.Key + " = " + element.Value[1] + " ";
+                        else
+                            query += element.Key + " IS " + element.Value[1] + " ";
                     else
                         query += element.Key + " = '" + element.Value[1] + "' ";
                 }
                 else
                 {
                     if (element.Value[0] == "number")
-                        query += element.Key + " = " + element.Value[1] + " AND ";
+                        if (element.Value[1] != "NULL")
+                            query += element.Key + " = " + element.Value[1] + " AND ";
+                        else
+                            query += element.Key + " IS " + element.Value[1] + " AND ";
                     else
                         query += element.Key + " = '" + element.Value[1] + "' AND ";
                 }
@@ -148,14 +154,20 @@ namespace Factures.DataBase
                     if (element.Equals(last))
                     {
                         if (element.Value[0] == "number")
-                            query += element.Key + " = " + element.Value[1] + " ";
+                            if (element.Value[1] != "NULL")
+                                query += element.Key + " = " + element.Value[1] + " ";
+                            else
+                                query += element.Key + " IS " + element.Value[1] + " ";
                         else
                             query += element.Key + " = '" + element.Value[1] + "' ";
                     }
                     else
                     {
                         if (element.Value[0] == "number")
-                            query += element.Key + " = " + element.Value[1] + " AND ";
+                            if (element.Value[1] != "NULL")
+                                query += element.Key + " = " + element.Value[1] + " AND ";
+                            else
+                                query += element.Key + " IS " + element.Value[1] + " AND ";
                         else
                             query += element.Key + " = '" + element.Value[1] + "' AND ";
                     }

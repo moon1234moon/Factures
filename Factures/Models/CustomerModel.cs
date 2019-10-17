@@ -165,7 +165,7 @@ namespace Factures.Models
         #endregion
 
         #region
-        public BindableCollection<FactureModel> GetMyFactures()
+        public BindableCollection<FactureModel> GetMyFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
             if (this.Id == 0)
@@ -178,12 +178,20 @@ namespace Factures.Models
                 {
                     new KeyValuePair<string, string[]>("customer_id", value)
                 };
+                if(season != null)
+                {
+                    if (season != 0)
+                        value = new string[2] { "number", season.ToString() };
+                    else
+                        value = new string[2] { "number", "NULL" };
+                    Data.Add(new KeyValuePair<string, string[]>("season_id", value));
+                }
                 factures = fm.GiveCollection(fm.FindByParameters(Data));
             }
             return factures;
         }
 
-        public BindableCollection<FactureModel> GetMyClearedFactures()
+        public BindableCollection<FactureModel> GetMyClearedFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
             if (this.Id == 0)
@@ -198,12 +206,20 @@ namespace Factures.Models
                 };
                 value = new string[2] { "number", "1" };
                 Data.Add(new KeyValuePair<string, string[]>("cleared", value));
+                if (season != null)
+                {
+                    if (season != 0)
+                        value = new string[2] { "number", season.ToString() };
+                    else
+                        value = new string[2] { "number", "NULL" };
+                    Data.Add(new KeyValuePair<string, string[]>("season_id", value));
+                }
                 factures = fm.GiveCollection(fm.FindByParameters(Data));
             }
             return factures;
         }
 
-        public BindableCollection<FactureModel> GetMyUnClearedFactures()
+        public BindableCollection<FactureModel> GetMyUnClearedFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
             if (this.Id == 0)
@@ -218,6 +234,14 @@ namespace Factures.Models
                 };
                 value = new string[2] { "number", "0" };
                 Data.Add(new KeyValuePair<string, string[]>("cleared", value));
+                if (season != null)
+                {
+                    if (season != 0)
+                        value = new string[2] { "number", season.ToString() };
+                    else
+                        value = new string[2] { "number", "NULL" };
+                    Data.Add(new KeyValuePair<string, string[]>("season_id", value));
+                }
                 factures = fm.GiveCollection(fm.FindByParameters(Data));
             }
             return factures;
@@ -269,7 +293,7 @@ namespace Factures.Models
         #endregion
 
         #region
-        public BindableCollection<ReceiptModel> GetMyReceipts()
+        public BindableCollection<ReceiptModel> GetMyReceipts(int? season = null)
         {
             BindableCollection<ReceiptModel> receipts = new BindableCollection<ReceiptModel>();
             if (this.Id == 0)
@@ -282,6 +306,14 @@ namespace Factures.Models
                 {
                     new KeyValuePair<string, string[]>("customer_id", value)
                 };
+                if (season != null)
+                {
+                    if (season != 0)
+                        value = new string[2] { "number", season.ToString() };
+                    else
+                        value = new string[2] { "number", "NULL" };
+                    Data.Add(new KeyValuePair<string, string[]>("season_id", value));
+                }
                 receipts = receipt.GiveCollection(receipt.FindByParameters(Data));
             }
             return receipts;

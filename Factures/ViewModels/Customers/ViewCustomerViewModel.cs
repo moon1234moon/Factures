@@ -25,6 +25,8 @@ namespace Factures.ViewModels
         private BindableCollection<FactureModel> _factures;
         private BindableCollection<ReceiptModel> _receipts;
         private BindableCollection<SeasonModel> _seasons;
+        private SeasonModel _receipt_season;
+        private int _receipt_number;
         #endregion
 
         public ViewCustomerViewModel(CustomerModel customer)
@@ -34,6 +36,28 @@ namespace Factures.ViewModels
         }
 
         #region
+        public int ReceiptNumber
+        {
+            get { return _receipt_number; }
+            set
+            {
+                _receipt_number = value;
+                NotifyOfPropertyChange(() => ReceiptNumber);
+                FillReceipts();
+            }
+        }
+
+        public SeasonModel ReceiptSeason
+        {
+            get { return _receipt_season; }
+            set
+            {
+                _receipt_season = value;
+                NotifyOfPropertyChange(() => ReceiptSeason);
+                FillReceipts();
+            }
+        }
+
         public int FactureNumber
         {
             get { return _facture_number; }
@@ -41,6 +65,7 @@ namespace Factures.ViewModels
             {
                 _facture_number = value;
                 NotifyOfPropertyChange(() => FactureNumber);
+                FillFactures();
             }
         }
 
@@ -51,6 +76,7 @@ namespace Factures.ViewModels
             {
                 _facture_season = value;
                 NotifyOfPropertyChange(() => FacturesSeason);
+                FillFactures();
             }
         }
 
@@ -71,6 +97,7 @@ namespace Factures.ViewModels
             {
                 _facture_type = value;
                 NotifyOfPropertyChange(() => FactureType);
+                FillFactures();
             }
         }
 
@@ -163,10 +190,10 @@ namespace Factures.ViewModels
             customer_bound.Add(Customer);
             CustomerBound = new BindableCollection<CustomerModel>(customer_bound);
             Products = Customer.GetMyProducts();
-            Factures = Customer.GetMyFactures();
-            Receipts = Customer.GetMyReceipts();
             FillSeasons();
+            FillFactures();
             SetSearches();
+            FillReceipts();
         }
 
         private void FillSeasons()
@@ -174,7 +201,11 @@ namespace Factures.ViewModels
             SeasonModel season = new SeasonModel();
             BindableCollection<SeasonModel> ss = season.GiveCollection(season.All());
             Seasons = new BindableCollection<SeasonModel>();
-            Seasons.Add(new SeasonModel());
+            season.Year = "All";
+            Seasons.Add(season);
+            season = new SeasonModel();
+            season.Year = "None";
+            Seasons.Add(season);
             foreach (SeasonModel s in ss)
             {
                 Seasons.Add(s);
@@ -184,6 +215,118 @@ namespace Factures.ViewModels
         private void SetSearches()
         {
             SetFactureSearchValues();
+            ReceiptSeason = Seasons[0];
+        }
+
+        public void FillFactures()
+        {
+            if (FactureNumber.ToString().Trim() != "0" && (FactureNumber % 1) == 0)
+            {
+                try
+                {
+                    FactureModel fm = new FactureModel();
+                    List<FactureModel> list = new List<FactureModel>() { fm.GetMeByNumber(FactureNumber, Customer.Id) };
+                    if (list[0] == null)
+                        throw new Exception("No facture for " + Customer.Name + " with number " + FactureNumber);
+                    Factures = new BindableCollection<FactureModel>(list);
+                }
+                catch(Exception e)
+                {
+                    Factures = new BindableCollection<FactureModel>();
+                }
+            }
+            else
+            {
+                switch (FactureType)
+                {
+                    case "All":
+                        switch (FacturesSeason.Id.ToString())
+                        {
+                            case "0":
+                                if (FacturesSeason.Year == "None")
+                                {
+                                    Factures = Customer.GetMyFactures(0);
+                                }
+                                else
+                                    Factures = Customer.GetMyFactures();
+                                break;
+                            default:
+                                Factures = Customer.GetMyFactures(FacturesSeason.Id);
+                                break;
+                        }
+                        break;
+                    case "Cleared":
+                        switch (FacturesSeason.Id.ToString())
+                        {
+                            case "0":
+                                if (FacturesSeason.Year == "None")
+                                {
+                                    Factures = Customer.GetMyClearedFactures(0);
+                                }
+                                else
+                                    Factures = Customer.GetMyClearedFactures(FacturesSeason.Id);
+                                break;
+                            default:
+                                Factures = Customer.GetMyClearedFactures(FacturesSeason.Id);
+                                break;
+                        }
+                        break;
+                    case "Uncleared":
+                        switch (FacturesSeason.Id.ToString())
+                        {
+                            case "0":
+                                if (FacturesSeason.Year == "None")
+                                {
+                                    Factures = Customer.GetMyUnClearedFactures(0);
+                                }
+                                else
+                                    Factures = Customer.GetMyUnClearedFactures(FacturesSeason.Id);
+                                break;
+                            default:
+                                Factures = Customer.GetMyUnClearedFactures(FacturesSeason.Id);
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public void FillReceipts()
+        {
+            if (ReceiptNumber.ToString().Trim() != "0" && (ReceiptNumber % 1) == 0)
+            {
+                try
+                {
+                    ReceiptModel rm = new ReceiptModel();
+                    List<ReceiptModel> list = new List<ReceiptModel>() { rm.GetMeByNumber(ReceiptNumber, Customer.Id) };
+                    if (list[0] == null || list.Count == 0)
+                        throw new Exception("No receipt for " + Customer.Name + " with number " + ReceiptNumber);
+                    Receipts = new BindableCollection<ReceiptModel>(list);
+                }
+                catch (Exception e)
+                {
+                    Receipts = new BindableCollection<ReceiptModel>();
+                }
+            }
+            else
+            {
+                switch (ReceiptSeason.Id.ToString())
+                {
+                    case "0":
+                        if (ReceiptSeason.Year == "None")
+                        {
+                            Receipts = Customer.GetMyReceipts(0);
+                        }
+                        else
+                            Receipts = Customer.GetMyReceipts();
+                        break;
+                    default:
+                        Receipts = Customer.GetMyReceipts(FacturesSeason.Id);
+                        break;
+                }
+            }
         }
         #endregion
 

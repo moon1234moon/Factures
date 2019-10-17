@@ -274,7 +274,7 @@ namespace Factures.Models
             return this;
         }
 
-        public ReceiptModel GetMeByNumber(int number)
+        public ReceiptModel GetMeByNumber(int number, int? customer = null)
         {
             string[] value = new string[2];
             value[0] = "number";
@@ -283,6 +283,13 @@ namespace Factures.Models
             {
                 new KeyValuePair<string, string[]>("number", value)
             };
+            if (customer != null)
+            {
+                value = new string[2];
+                value[0] = "number";
+                value[1] = customer.ToString();
+                conditions.Add(new KeyValuePair<string, string[]>("customer_id", value));
+            }
             DataTable dt = this.FindByParameters(conditions);
             return this.ReturnMeFromDataTable(dt);
         }
