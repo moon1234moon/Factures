@@ -25,8 +25,11 @@ namespace Factures.ViewModels
         private BindableCollection<FactureModel> _factures;
         private BindableCollection<ReceiptModel> _receipts;
         private BindableCollection<SeasonModel> _seasons;
+        private BindableCollection<CurrencyModel> _currencies;
         private SeasonModel _receipt_season;
         private int _receipt_number;
+        private SeasonModel _balance_season;
+        private CurrencyModel _balance_currency;
         #endregion
 
         public ViewCustomerViewModel(CustomerModel customer)
@@ -36,6 +39,36 @@ namespace Factures.ViewModels
         }
 
         #region
+        public CurrencyModel BalanceCurrency
+        {
+            get { return _balance_currency; }
+            set
+            {
+                _balance_currency = value;
+                NotifyOfPropertyChange(() => BalanceCurrency);
+            }
+        }
+
+        public BindableCollection<CurrencyModel> Currencies
+        {
+            get { return _currencies; }
+            set
+            {
+                _currencies = value;
+                NotifyOfPropertyChange(() => Currencies);
+            }
+        }
+
+        public SeasonModel BalanceSeason
+        {
+            get { return _balance_season; }
+            set
+            {
+                _balance_season = value;
+                NotifyOfPropertyChange(() => BalanceSeason);
+            }
+        }
+
         public int ReceiptNumber
         {
             get { return _receipt_number; }
@@ -190,6 +223,10 @@ namespace Factures.ViewModels
             customer_bound.Add(Customer);
             CustomerBound = new BindableCollection<CustomerModel>(customer_bound);
             Products = Customer.GetMyProducts();
+            CurrencyModel currency = new CurrencyModel();
+            Currencies = currency.GiveCollection(currency.All());
+            if (Currencies.Count > 0)
+                BalanceCurrency = Currencies[0];
             FillSeasons();
             FillFactures();
             SetSearches();
@@ -395,6 +432,16 @@ namespace Factures.ViewModels
         public void ViewReceipt(ReceiptModel receipt)
         {
             ActivateItem(new ViewReceiptViewModel(receipt, true));
+        }
+        #endregion
+
+        #region
+        public void ComputeBalance()
+        {
+            if (BalanceCurrency != null && BalanceCurrency.Id.ToString() != "0")
+                ActivateItem(new BalanceViewModel(Customer, BalanceSeason, BalanceCurrency));
+            else
+                MessageBox.Show("Select a currency to view the balance in", "Select a Currency", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
     }

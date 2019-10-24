@@ -330,5 +330,22 @@ namespace Factures.Models
             return true;
         }
         #endregion
+
+        #region
+        public ReceiptModel GetMeByFacture(int facture_id)
+        {
+            string[] value = new string[2];
+            value[0] = "number";
+            value[1] = facture_id.ToString();
+            List<KeyValuePair<string, string[]>> conditions = new List<KeyValuePair<string, string[]>>
+            {
+                new KeyValuePair<string, string[]>("facture_id", value)
+            };
+            DataTable dt = this.FindByParameters(conditions);
+            if (dt.Rows.Count > 0)
+                return this.ReturnMeFromDataTable(dt);
+            return null;
+        }
+        #endregion
     }
 }

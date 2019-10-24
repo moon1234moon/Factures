@@ -70,8 +70,9 @@ C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewConversionView
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewConversionView.baml
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewReceiptView.g.cs
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewReceiptView.baml
-C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Factures.csprojAssemblyReference.cache
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewCustomerView.g.cs
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewCustomerView.baml
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BlankView.g.cs
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BlankView.baml
+C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BalanceView.g.cs
+C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BalanceView.baml

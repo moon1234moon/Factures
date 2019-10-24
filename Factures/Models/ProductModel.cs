@@ -352,23 +352,26 @@ namespace Factures.Models
             //Save
             DataTable dt = this.Save(this.FillMe());
             this.Id = Convert.ToInt32(dt.Rows[0][0].ToString());
-            if (Images != null || Images[0] == null)
+            if (Images != null)
             {
-                foreach (string[] im in Images)
+                if (Images[0] != null)
                 {
-                    ImageModel NewImage = new ImageModel()
+                    foreach (string[] im in Images)
                     {
-                        Name = im[0].ToString(),
-                        Type = im[1].ToString(),
-                        Image = im[2].ToString()
-                    };
-                    NewImage = NewImage.SaveThis();
-                    ProductImageModel ProductImage = new ProductImageModel()
-                    {
-                        Product = Id,
-                        Image = NewImage.Id
-                    };
-                    ProductImage = ProductImage.SaveThis();
+                        ImageModel NewImage = new ImageModel()
+                        {
+                            Name = im[0].ToString(),
+                            Type = im[1].ToString(),
+                            Image = im[2].ToString()
+                        };
+                        NewImage = NewImage.SaveThis();
+                        ProductImageModel ProductImage = new ProductImageModel()
+                        {
+                            Product = Id,
+                            Image = NewImage.Id
+                        };
+                        ProductImage = ProductImage.SaveThis();
+                    }
                 }
             }
             return this;

@@ -22,6 +22,8 @@ namespace Factures.Models
         private string _customer_name;
         private string _season_year;
         private string _name_number;
+        private float total_amount;
+        private int currency_id;
         #endregion
 
         public FactureModel()
@@ -37,6 +39,18 @@ namespace Factures.Models
         }
 
         #region
+        public int Currency
+        {
+            get { return currency_id; }
+            set { currency_id = value; }
+        }
+
+        public float Amount
+        {
+            get { return total_amount; }
+            set { total_amount = value; }
+        }
+
         public string NameNumber
         {
             get { return _name_number; }
@@ -270,6 +284,20 @@ namespace Factures.Models
 ;        }
         #endregion
 
+        #region
+        public int? GetReceipt()
+        {
+            if(Id.ToString() != "0")
+            {
+                ReceiptModel receipt = new ReceiptModel();
+                receipt = receipt.GetMeByFacture(Id);
+                if (receipt != null)
+                    return receipt.Id;
+            }
+            return null;
+        }
+        #endregion
+
         public float? TotalAmount(int currency)
         {
             float? total = 0;
@@ -282,6 +310,8 @@ namespace Factures.Models
                     return null;
                 }
             }
+            Amount = (float)total;
+            Currency = currency;
             return total;
         }
     }

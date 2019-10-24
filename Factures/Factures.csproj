@@ -89,6 +89,7 @@
     <Compile Include="Models\ReceiptModel.cs" />
     <Compile Include="Models\SeasonModel.cs" />
     <Compile Include="Models\SizeModel.cs" />
+    <Compile Include="ViewModels\BalanceViewModel.cs" />
     <Compile Include="ViewModels\BlankViewModel.cs" />
     <Compile Include="ViewModels\Conversions\ConversionViewModel.cs" />
     <Compile Include="ViewModels\Conversions\CreateConversionViewModel.cs" />
@@ -116,6 +117,9 @@
     <Compile Include="ViewModels\Conversions\ViewConversionViewModel.cs" />
     <Compile Include="ViewModels\Receipts\ViewReceiptViewModel.cs" />
     <Compile Include="ViewModels\Customers\ViewCustomerViewModel.cs" />
+    <Compile Include="Views\BalanceView.xaml.cs">
+      <DependentUpon>BalanceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BlankView.xaml.cs">
       <DependentUpon>BlankView.xaml</DependentUpon>
     </Compile>
@@ -227,6 +231,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\BalanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BlankView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
