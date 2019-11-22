@@ -76,3 +76,6 @@ C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BlankView.g.cs
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BlankView.baml
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BalanceView.g.cs
 C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\BalanceView.baml
+C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Factures.csprojAssemblyReference.cache
+C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewImageView.g.cs
+C:\Users\Hilal\source\repos\Factures\Factures\obj\Debug\Views\ViewImageView.baml

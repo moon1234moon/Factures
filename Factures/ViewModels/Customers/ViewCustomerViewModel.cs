@@ -20,12 +20,12 @@ namespace Factures.ViewModels
         private BindableCollection<ProductModel> _products;
         private CustomerModel _customer;
         private BindableCollection<CustomerModel> _customer_bound;
-        private BitmapImage _product_image;
         private SeasonModel _facture_season;
         private BindableCollection<FactureModel> _factures;
         private BindableCollection<ReceiptModel> _receipts;
         private BindableCollection<SeasonModel> _seasons;
         private BindableCollection<CurrencyModel> _currencies;
+        private BindableCollection<SeasonModel> _balance_seasons;
         private SeasonModel _receipt_season;
         private int _receipt_number;
         private SeasonModel _balance_season;
@@ -39,6 +39,12 @@ namespace Factures.ViewModels
         }
 
         #region
+        public BindableCollection<SeasonModel> BalanceSeasons
+        {
+            get { return _balance_seasons; }
+            set { _balance_seasons = value; }
+        }
+
         public CurrencyModel BalanceCurrency
         {
             get { return _balance_currency; }
@@ -161,16 +167,6 @@ namespace Factures.ViewModels
             {
                 _factures = value;
                 NotifyOfPropertyChange(() => Factures);
-            }
-        }
-
-        public BitmapImage Image
-        {
-            get { return _product_image; }
-            set
-            {
-                _product_image = value;
-                NotifyOfPropertyChange(() => Image);
             }
         }
 
@@ -370,16 +366,7 @@ namespace Factures.ViewModels
         #region
         public void ViewProduct(ProductModel product)
         {
-            BitmapImage image = product.GetImageFromDb();
-            if(image != null)
-            {
-                Image = image;
-            }
-            else
-            {
-                Image = new BitmapImage();
-                MessageBox.Show("There is no image set for product " + product.Id, "No Image", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            ActivateItem(new ViewImageViewModel(new object[2] { "Product", product }));
         }
 
         public void EditProduct(ProductModel product)
@@ -439,7 +426,9 @@ namespace Factures.ViewModels
         public void ComputeBalance()
         {
             if (BalanceCurrency != null && BalanceCurrency.Id.ToString() != "0")
+            {
                 ActivateItem(new BalanceViewModel(Customer, BalanceSeason, BalanceCurrency));
+            }
             else
                 MessageBox.Show("Select a currency to view the balance in", "Select a Currency", MessageBoxButton.OK, MessageBoxImage.Information);
         }

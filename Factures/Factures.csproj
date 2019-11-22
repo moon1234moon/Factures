@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\Conversions\ViewConversionViewModel.cs" />
     <Compile Include="ViewModels\Receipts\ViewReceiptViewModel.cs" />
     <Compile Include="ViewModels\Customers\ViewCustomerViewModel.cs" />
+    <Compile Include="ViewModels\ViewImageViewModel.cs" />
     <Compile Include="Views\BalanceView.xaml.cs">
       <DependentUpon>BalanceView.xaml</DependentUpon>
     </Compile>
@@ -197,6 +198,9 @@
     </Compile>
     <Compile Include="Views\ViewFactureView.xaml.cs">
       <DependentUpon>ViewFactureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewImageView.xaml.cs">
+      <DependentUpon>ViewImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewReceiptView.xaml.cs">
       <DependentUpon>ViewReceiptView.xaml</DependentUpon>
@@ -336,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ViewFactureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

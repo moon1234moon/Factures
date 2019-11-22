@@ -12,6 +12,11 @@ namespace Factures.ViewModels
     public class BalanceViewModel : Conductor<object>
     {
         #region
+        private float _sum_factures_uncleared;
+        private float _sum_factures_cleared;
+        private float _sum_factures;
+        private float _sum_receipts;
+        private float _remainder;
         private float _total_factures_no_season;
         private float _total_factures_cleared;
         private float _total_factures;
@@ -49,154 +54,304 @@ namespace Factures.ViewModels
         }
 
         #region
+        public float SumFacturesUncleared
+        {
+            get { return _sum_factures_uncleared; }
+            set
+            {
+                _sum_factures_uncleared = value;
+                NotifyOfPropertyChange(() => SumFacturesUncleared);
+            }
+        }
+
+        public float SumFacturesCleared
+        {
+            get { return _sum_factures_cleared; }
+            set
+            {
+                _sum_factures_cleared = value;
+                NotifyOfPropertyChange(() => SumFacturesCleared);
+            }
+        }
+
+        public float SumFactures
+        {
+            get { return _sum_factures; }
+            set
+            {
+                _sum_factures = value;
+                NotifyOfPropertyChange(() => SumFactures);
+            }
+        }
+
+        public float SumReceipts
+        {
+            get { return _sum_receipts; }
+            set
+            {
+                _sum_receipts = value;
+                NotifyOfPropertyChange(() => SumReceipts);
+            }
+        }
+
+        public float Remainder
+        {
+            get { return _remainder; }
+            set
+            {
+                _remainder = value;
+                NotifyOfPropertyChange(() => Remainder);
+            }    
+        }
+
         public float TotalReceiptSeason
         {
             get { return _total_receipt_season; }
-            set { _total_receipt_season = value; }
+            set
+            {
+                _total_receipt_season = value;
+                NotifyOfPropertyChange(() => TotalReceiptSeason);
+            }
         }
 
         public float TotalReceiptSeasonNoFacture
         {
             get { return _total_receipt_season_no_factures; }
-            set { _total_receipt_season_no_factures = value; }
+            set
+            {
+                _total_receipt_season_no_factures = value;
+                NotifyOfPropertyChange(() => TotalReceiptSeasonNoFacture);
+            }
         }
 
         public float TotalReceiptSeasonWithFacture
         {
             get { return _total_receipt_season_with_factures; }
-            set { _total_receipt_season_with_factures = value; }
+            set
+            {
+                _total_receipt_season_with_factures = value;
+                NotifyOfPropertyChange(() => TotalReceiptSeasonWithFacture);
+            }
         }
 
         public float TotalReceiptNoSeason
         {
             get { return _total_receipt_no_season; }
-            set { _total_receipt_no_season = value; }
+            set
+            {
+                _total_receipt_no_season = value;
+                NotifyOfPropertyChange(() => TotalReceiptNoSeason);
+            }
         }
 
         public float TotalReceiptNoSeasonNoFacture
         {
             get { return _total_receipt_no_season_no_factures; }
-            set { _total_receipt_no_season_no_factures = value; }
+            set
+            {
+                _total_receipt_no_season_no_factures = value;
+                NotifyOfPropertyChange(() => TotalReceiptNoSeasonNoFacture);
+            }
         }
 
         public float TotalReceiptNoSeasonWithFacture
         {
             get { return _total_receipt_no_season_with_factures; }
-            set { _total_receipt_no_season_with_factures = value; }
+            set
+            {
+                _total_receipt_no_season_with_factures = value;
+                NotifyOfPropertyChange(() => TotalReceiptNoSeasonWithFacture);
+            }
         }
 
         public float TotalFactures
         {
             get { return _total_factures; }
-            set { _total_factures = value; }
+            set
+            {
+                _total_factures = value;
+                NotifyOfPropertyChange(() => TotalFactures);
+            }
         }
         
         public float TotalFacturesUnCleared
         {
             get { return _total_factures_uncleared; }
-            set { _total_factures_uncleared = value; }
+            set
+            {
+                _total_factures_uncleared = value;
+                NotifyOfPropertyChange(() => TotalFacturesUnCleared);
+            }
         }
 
         public float TotalFacturesCleared
         {
             get { return _total_factures_cleared; }
-            set { _total_factures_cleared = value; }
+            set
+            {
+                _total_factures_cleared = value;
+                NotifyOfPropertyChange(() => TotalFacturesCleared);
+            }
         }
 
         public float TotalFacturesNoSeason
         {
             get { return _total_factures_no_season; }
-            set { _total_factures_no_season = value; }
+            set
+            {
+                _total_factures_no_season = value;
+                NotifyOfPropertyChange(() => TotalFacturesNoSeason);
+            }
         }
 
         public List<int?> FactureIdsWithReceipts
         {
             get { return _facture_ids_with_receipts; }
-            set { _facture_ids_with_receipts = value; }
+            set
+            {
+                _facture_ids_with_receipts = value;
+                NotifyOfPropertyChange(() => FactureIdsWithReceipts);
+            }
         }
 
         public BindableCollection<ReceiptModel> ReceiptsNoSeasonsNoFactures
         {
             get { return _receipts_no_season_no_factures; }
-            set { _receipts_no_season_no_factures = value; }
+            set
+            {
+                _receipts_no_season_no_factures = value;
+                NotifyOfPropertyChange(() => ReceiptsNoSeasonsNoFactures);
+            }
         }
 
         public BindableCollection<ReceiptModel> ReceiptsSeasonsNoFactures
         {
             get { return _receipts_season_no_factures; }
-            set { _receipts_season_no_factures = value; }
+            set
+            {
+                _receipts_season_no_factures = value;
+                NotifyOfPropertyChange(() => ReceiptsSeasonsNoFactures);
+            }
         }
 
         public BindableCollection<ReceiptModel> ReceiptsSeasonsWithFactures
         {
             get { return _receipts_season_with_factures; }
-            set { _receipts_season_with_factures = value; }
+            set
+            {
+                _receipts_season_with_factures = value;
+                NotifyOfPropertyChange(() => ReceiptsSeasonsWithFactures);
+            }
         }
 
         public BindableCollection<ReceiptModel> ReceiptsNoSeasons
         {
             get { return _receipts_no_season; }
-            set { _receipts_no_season = value; }
+            set
+            {
+                _receipts_no_season = value;
+                NotifyOfPropertyChange(() => ReceiptsNoSeasons);
+            }
         }
 
         public BindableCollection<ReceiptModel> ReceiptsSeasons
         {
             get { return _receipts_season; }
-            set { _receipts_season = value; }
+            set
+            {
+                _receipts_season = value;
+                NotifyOfPropertyChange(() => ReceiptsSeasons);
+            }
         }
 
         public BindableCollection<ReceiptModel> Receipts
         {
             get { return _receipts; }
-            set { _receipts = value; }
+            set
+            {
+                _receipts = value;
+                NotifyOfPropertyChange(() => Receipts);
+            }
         }
 
         public BindableCollection<FactureModel> FacturesListUncleared
         {
             get { return _factures_list_un_cleared; }
-            set { _factures_list_un_cleared = value; }
+            set
+            {
+                _factures_list_un_cleared = value;
+                NotifyOfPropertyChange(() => FacturesListUncleared);
+            }
         }
 
         public BindableCollection<FactureModel> FacturesListCleared
         {
             get { return _factures_list_cleared; }
-            set { _factures_list_cleared = value; }
+            set
+            {
+                _factures_list_cleared = value;
+                NotifyOfPropertyChange(() => FacturesListCleared);
+            }
         }
 
         public BindableCollection<FactureModel> FacturesSandalone
         {
             get { return _factures_standalone; }
-            set { _factures_standalone = value; }
+            set
+            {
+                _factures_standalone = value;
+                NotifyOfPropertyChange(() => FacturesSandalone);
+            }
         }
 
         public BindableCollection<FactureModel> FacturesList
         {
             get { return _factures_list; }
-            set { _factures_list = value; }
+            set
+            {
+                _factures_list = value;
+                NotifyOfPropertyChange(() => FacturesList);
+            }
         }
 
         public BindableCollection<FactureModel> Factures
         {
             get { return _facture; }
-            set { _facture = value; }
+            set
+            {
+                _facture = value;
+                NotifyOfPropertyChange(() => Factures);
+            }
         }
 
         public CurrencyModel Currency
         {
             get { return _currency; }
-            set { _currency = value; }
+            set
+            {
+                _currency = value;
+                NotifyOfPropertyChange(() => Currency);
+            }
         }
 
         public SeasonModel Season
         {
             get { return _season; }
-            set { _season = value; }
+            set
+            {
+                _season = value;
+                NotifyOfPropertyChange(() => Season);
+            }
         }
 
         public CustomerModel Customer
         {
             get { return _customer; }
-            set { _customer = value; }
+            set
+            {
+                _customer = value;
+                NotifyOfPropertyChange(() => Customer);
+            }
         }
         #endregion
 
@@ -210,6 +365,7 @@ namespace Factures.ViewModels
                     SetFactures();
                     SetReceipts();
                     Compute();
+                    ShowResult();
                 }
             }
             catch(Exception e)
@@ -218,9 +374,29 @@ namespace Factures.ViewModels
             }
         }
 
+        public void ShowResult()
+        {
+            string message = "The balance for customer " + Customer.Name;
+            if(Season != null && Season.Id.ToString() != "0")
+            {
+                message += " in Season " + Season.Year;
+            }
+            message += " is complete";
+            MessageBox.Show(message, "Balance Calculation", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         public void Compute()
         {
-            
+            // Factures Summation
+            SumFacturesUncleared = TotalFacturesUnCleared + TotalFacturesNoSeason;
+            SumFacturesCleared = TotalFacturesCleared;
+            SumFactures = SumFacturesUncleared + SumFacturesCleared;
+
+            // Receipts Summation
+            SumReceipts = TotalReceiptSeason + TotalReceiptNoSeason;
+
+            // Calculation
+            Remainder = SumFactures - SumReceipts;
         }
 
         public void SetReceipts()
@@ -326,6 +502,11 @@ namespace Factures.ViewModels
             FacturesSandalone = factures_standalone;
             FacturesListCleared = factures_cleared;
             FacturesListUncleared = factures_un_cleared;
+            Factures = FacturesList;
+            foreach(FactureModel fm in factures_standalone)
+            {
+                Factures.Add(fm);
+            }
 
             TotalFacturesNoSeason = AddFacturesAmount(FacturesSandalone, Currency.Id);
             TotalFacturesUnCleared = AddFacturesAmount(FacturesListUncleared, Currency.Id);

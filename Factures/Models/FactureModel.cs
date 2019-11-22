@@ -24,6 +24,7 @@ namespace Factures.Models
         private string _name_number;
         private float total_amount;
         private int currency_id;
+        private string _full_amount;
         #endregion
 
         public FactureModel()
@@ -39,6 +40,12 @@ namespace Factures.Models
         }
 
         #region
+        public string FullAmount
+        {
+            get { return _full_amount; }
+            set { _full_amount = value; }
+        }
+
         public int Currency
         {
             get { return currency_id; }
@@ -144,6 +151,21 @@ namespace Factures.Models
                 ctm.NameNumber = ctm.Name + " - " + ctm.Number;
                 if (row[5].ToString() != null && row[5].ToString() != string.Empty)
                     ctm.Delivery = System.Convert.ToDateTime(row[5].ToString());
+                try
+                {
+                    CurrencyModel c = new CurrencyModel();
+                    BindableCollection<CurrencyModel> currencies = c.GiveCollection(c.All());
+                    if (currencies.Count > 0)
+                    {
+                        ctm.Amount = (float)ctm.TotalAmount(currencies[0].Id);
+                        Currency = currencies[0].Id;
+                        FullAmount = Amount + " " + currencies[0].Symbol; 
+                    }
+                }
+                catch(Exception e)
+                {
+
+                }
                 output.Add(ctm);
             }
             return new BindableCollection<FactureModel>(output);
