@@ -12,14 +12,17 @@ namespace Factures.ViewModels
     public class BalanceViewModel : Conductor<object>
     {
         #region
+        private Boolean _seasoned_factures;
+        private string _title;
+        private string _total_facturs_un_cleared_text;
+        private string _total_facturs_cleared_text;
         private float _sum_factures_uncleared;
         private float _sum_factures_cleared;
-        private float _sum_factures;
         private float _sum_receipts;
         private float _remainder;
-        private float _total_factures_no_season;
+        private float _total_factures_no_season_cleared;
+        private float _total_factures_no_season_un_cleared;
         private float _total_factures_cleared;
-        private float _total_factures;
         private float _total_factures_uncleared;
         private float _total_receipt_season;
         private float _total_receipt_season_no_factures;
@@ -36,6 +39,8 @@ namespace Factures.ViewModels
         private BindableCollection<FactureModel> _factures_list;
         private BindableCollection<FactureModel> _factures_list_cleared;
         private BindableCollection<FactureModel> _factures_list_un_cleared;
+        private BindableCollection<FactureModel> _factures_standalone_cleared;
+        private BindableCollection<FactureModel> _factures_standalone_un_cleared;
         private BindableCollection<FactureModel> _factures_standalone;
         private BindableCollection<ReceiptModel> _receipts_season = new BindableCollection<ReceiptModel>();
         private BindableCollection<ReceiptModel> _receipts_season_no_factures = new BindableCollection<ReceiptModel>();
@@ -45,8 +50,9 @@ namespace Factures.ViewModels
         private BindableCollection<ReceiptModel> _receipts_no_season_with_factures = new BindableCollection<ReceiptModel>();
         #endregion
 
-        public BalanceViewModel(CustomerModel customer = null, SeasonModel season = null, CurrencyModel currency = null)
+        public BalanceViewModel(CustomerModel customer = null, SeasonModel season = null, CurrencyModel currency = null, Boolean seasoned_factures = true)
         {
+            SeasondFactures = seasoned_factures;
             Customer = customer;
             Season = season;
             Currency = currency;
@@ -54,6 +60,46 @@ namespace Factures.ViewModels
         }
 
         #region
+        public Boolean SeasondFactures
+        {
+            get { return _seasoned_factures; }
+            set
+            {
+                _seasoned_factures = value;
+                NotifyOfPropertyChange(() => SeasondFactures);
+            }
+        }
+
+        public string TotalFacturesUnClearedText
+        {
+            get { return _total_facturs_un_cleared_text; }
+            set
+            {
+                _total_facturs_un_cleared_text = value;
+                NotifyOfPropertyChange(() => TotalFacturesUnClearedText);
+            }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                _title = value;
+                NotifyOfPropertyChange(() => Title);
+            }
+        }
+
+        public string TotalFacturesClearedText
+        {
+            get { return _total_facturs_cleared_text; }
+            set
+            {
+                _total_facturs_cleared_text = value;
+                NotifyOfPropertyChange(() => TotalFacturesClearedText);
+            }
+        }
+
         public float SumFacturesUncleared
         {
             get { return _sum_factures_uncleared; }
@@ -71,16 +117,6 @@ namespace Factures.ViewModels
             {
                 _sum_factures_cleared = value;
                 NotifyOfPropertyChange(() => SumFacturesCleared);
-            }
-        }
-
-        public float SumFactures
-        {
-            get { return _sum_factures; }
-            set
-            {
-                _sum_factures = value;
-                NotifyOfPropertyChange(() => SumFactures);
             }
         }
 
@@ -164,16 +200,6 @@ namespace Factures.ViewModels
             }
         }
 
-        public float TotalFactures
-        {
-            get { return _total_factures; }
-            set
-            {
-                _total_factures = value;
-                NotifyOfPropertyChange(() => TotalFactures);
-            }
-        }
-        
         public float TotalFacturesUnCleared
         {
             get { return _total_factures_uncleared; }
@@ -194,13 +220,23 @@ namespace Factures.ViewModels
             }
         }
 
-        public float TotalFacturesNoSeason
+        public float TotalFacturesNoSeasonCleared
         {
-            get { return _total_factures_no_season; }
+            get { return _total_factures_no_season_cleared; }
             set
             {
-                _total_factures_no_season = value;
-                NotifyOfPropertyChange(() => TotalFacturesNoSeason);
+                _total_factures_no_season_cleared = value;
+                NotifyOfPropertyChange(() => TotalFacturesNoSeasonCleared);
+            }
+        }
+
+        public float TotalFacturesNoSeasonUnCleared
+        {
+            get { return _total_factures_no_season_un_cleared; }
+            set
+            {
+                _total_factures_no_season_un_cleared = value;
+                NotifyOfPropertyChange(() => TotalFacturesNoSeasonUnCleared);
             }
         }
 
@@ -271,6 +307,26 @@ namespace Factures.ViewModels
             {
                 _receipts = value;
                 NotifyOfPropertyChange(() => Receipts);
+            }
+        }
+
+        public BindableCollection<FactureModel> FacturesStandaloneCleared
+        {
+            get { return _factures_standalone_cleared; }
+            set
+            {
+                _factures_standalone_cleared = value;
+                NotifyOfPropertyChange(() => FacturesStandaloneCleared);
+            }
+        }
+        
+        public BindableCollection<FactureModel> FacturesStandaloneUnCleared
+        {
+            get { return _factures_standalone_un_cleared; }
+            set
+            {
+                _factures_standalone_un_cleared = value;
+                NotifyOfPropertyChange(() => FacturesStandaloneUnCleared);
             }
         }
 
@@ -362,6 +418,7 @@ namespace Factures.ViewModels
             {
                 if (Customer != null)
                 {
+                    SetTitle();
                     SetFactures();
                     SetReceipts();
                     Compute();
@@ -371,6 +428,27 @@ namespace Factures.ViewModels
             catch(Exception e)
             {
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void SetTitle()
+        {
+            switch(Season.Id)
+            {
+                case 0:
+                    switch(Season.Year)
+                    {
+                        case "None":
+                            Title = "Balance for " + Customer.Name + " for factures and receipts that don't have a season";
+                            break;
+                        default:
+                            Title = "Balance for " + Customer.Name + " for factures and receipts in all seasons";
+                            break;
+                    }
+                    break;
+                default:
+                    Title = "Balance for " + Customer.Name + " for factures and receipts in season " + Season.Year;
+                    break;
             }
         }
 
@@ -387,16 +465,38 @@ namespace Factures.ViewModels
 
         public void Compute()
         {
-            // Factures Summation
-            SumFacturesUncleared = TotalFacturesUnCleared + TotalFacturesNoSeason;
-            SumFacturesCleared = TotalFacturesCleared;
-            SumFactures = SumFacturesUncleared + SumFacturesCleared;
+            switch(Season.Id)
+            {
+                case 0:
+                    switch(Season.Year)
+                    {
+                        case "None":
+                            SumFacturesUncleared = TotalFacturesNoSeasonUnCleared;
+                            SumFacturesCleared = TotalFacturesNoSeasonCleared;
+                            break;
+                        case "All":
+                            SumFacturesUncleared = TotalFacturesUnCleared;
+                            SumFacturesCleared = TotalFacturesCleared;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    SumFacturesUncleared = TotalFacturesUnCleared;
+                    SumFacturesCleared = TotalFacturesCleared;
+                    break;
+            }
+
+            //SetTextBlocks
+            TotalFacturesClearedText = "Total amount = " + SumFacturesCleared + " " + Currency.Symbol;
+            TotalFacturesUnClearedText = "Total amount = " + SumFacturesUncleared + " " + Currency.Symbol;
 
             // Receipts Summation
             SumReceipts = TotalReceiptSeason + TotalReceiptNoSeason;
 
             // Calculation
-            Remainder = SumFactures - SumReceipts;
+            // Remainder = SumFactures - SumReceipts;
         }
 
         public void SetReceipts()
@@ -482,15 +582,69 @@ namespace Factures.ViewModels
 
         public void SetFactures()
         {
+            /*
+             * Variables
+             */
+            #region
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
             BindableCollection<FactureModel> factures_cleared = new BindableCollection<FactureModel>();
             BindableCollection<FactureModel> factures_un_cleared = new BindableCollection<FactureModel>();
             BindableCollection<FactureModel> factures_standalone = new BindableCollection<FactureModel>();
-            if (Season != null && Season.Id.ToString() != "0")
+            BindableCollection<FactureModel> factures_standalone_cleared = new BindableCollection<FactureModel>();
+            BindableCollection<FactureModel> factures_standalone_un_cleared = new BindableCollection<FactureModel>();
+            #endregion
+
+            switch (Season.Id)
             {
-                factures = Customer.GetMyFactures(Season.Id);
+                case 0:
+                    switch(Season.Year)
+                    {
+                        case "None":
+                            factures = Customer.GetMyFactures(0);
+                            factures_standalone = factures;
+                            FacturesList = factures;
+                            break;
+                        case "All":
+                            factures = Customer.GetMyFactures(-1);
+                            switch(SeasondFactures)
+                            {
+                                case true:
+                                    factures_standalone = Customer.GetMyFactures(0);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            FacturesList = factures;
+                            foreach(FactureModel facture in factures_standalone)
+                            {
+                                FacturesList.Add(facture);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    factures = Customer.GetMyFactures(Season.Id);
+                    switch (SeasondFactures)
+                    {
+                        case true:
+                            factures_standalone = Customer.GetMyFactures(0);
+                            break;
+                        default:
+                            break;
+                    }
+                    FacturesList = factures;
+                    foreach (FactureModel facture in factures_standalone)
+                    {
+                        FacturesList.Add(facture);
+                    }
+                    break;
             }
-            factures_standalone = Customer.GetMyUnClearedFactures(0);
+
+            /*
+             * Fill Cleared and Un-Cleared factures
+             */
             foreach(FactureModel facture in factures)
             {
                 if (facture.Cleared == true)
@@ -498,20 +652,31 @@ namespace Factures.ViewModels
                 else
                     factures_un_cleared.Add(facture);
             }
-            FacturesList = factures;
+            foreach (FactureModel facture in factures_standalone)
+            {
+                if (facture.Cleared == true)
+                    factures_standalone_cleared.Add(facture);
+                else
+                    factures_standalone_un_cleared.Add(facture);
+            }
+
+            /*
+             * Save All Factures
+             */
             FacturesSandalone = factures_standalone;
             FacturesListCleared = factures_cleared;
             FacturesListUncleared = factures_un_cleared;
-            Factures = FacturesList;
-            foreach(FactureModel fm in factures_standalone)
-            {
-                Factures.Add(fm);
-            }
+            FacturesStandaloneCleared = factures_standalone_cleared;
+            FacturesStandaloneUnCleared = factures_standalone_un_cleared;
 
-            TotalFacturesNoSeason = AddFacturesAmount(FacturesSandalone, Currency.Id);
+
+            /*
+             * Set The Total of All Factures
+             */
+            TotalFacturesNoSeasonCleared = AddFacturesAmount(FacturesStandaloneCleared, Currency.Id);
+            TotalFacturesNoSeasonUnCleared = AddFacturesAmount(FacturesStandaloneUnCleared, Currency.Id);
             TotalFacturesUnCleared = AddFacturesAmount(FacturesListUncleared, Currency.Id);
             TotalFacturesCleared = AddFacturesAmount(FacturesListCleared, Currency.Id);
-            TotalFactures = AddFacturesAmount(FacturesList, Currency.Id);
         }
         #endregion
 

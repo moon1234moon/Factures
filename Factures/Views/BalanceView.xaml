@@ -10,12 +10,13 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -25,31 +26,43 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         
-        <!-- Row 1 - Factures -->
+        <!-- Row 0 / Column 0->2 / TITLE -->
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                   Margin="0, 0, 0, 15" 
+                   Text="{Binding Path=Title, Mode=OneTime}"
+                   FontSize="30" FontWeight="SemiBold"/>
+
+        <!-- Row 1 - All Factures -->
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0"
+            <TextBlock Grid.Column="1" Grid.Row="1"
                        Margin="0, 0, 0, 15"
                        FontSize="20"
                        FontWeight="SemiBold">
                 All Factures Reviewed: 
             </TextBlock>
-            <DataGrid AlternatingRowBackground="Gray" 
-                  Grid.Column="0" Grid.Row="1"
-                  x:Name="Factures"
-                  ItemsSource="{Binding FacturesList}"
-                  CanUserAddRows="False" 
-                  MinWidth="100" MinHeight="50" 
-                  FontFamily="Times New Roman"
-                  AutoGenerateColumns="False" 
-                  IsReadOnly="True"
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="Factures"
+                       ItemsSource="{Binding FacturesList}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
                   >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
@@ -62,7 +75,108 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        
-        
+
+        <!-- Row 2 / Column 1 - All Factures Cleared -->
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                All Paid Factures:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="FacturesListCleared"
+                       ItemsSource="{Binding FacturesListCleared}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                    <DataGridTextColumn Header="Number" Binding="{Binding Path=Number}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                    <DataGridTextColumn Header="Season" Binding="{Binding Path=SeasonYear}" />
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=FullAmount}" />
+                    <DataGridTextColumn Header="Cleared" Binding="{Binding Path=Cleared}" />
+                    <DataGridTextColumn Header="Delivery Date" Binding="{Binding Path=Delivery}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Grid.Column="1" Grid.Row="3"
+                       Grid.ColumnSpan="2"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       Text="{Binding Path=TotalFacturesClearedText}"
+                       FontWeight="SemiBold" />
+        </Grid>
+
+        <!-- Row 2 / Column 2 - All Factures Un-Cleared -->
+        <Grid Grid.Column="2" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                All Un-Paid Factures:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="FacturesListUnCleared"
+                       ItemsSource="{Binding FacturesListUncleared}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                    <DataGridTextColumn Header="Number" Binding="{Binding Path=Number}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" />
+                    <DataGridTextColumn Header="Season" Binding="{Binding Path=SeasonYear}" />
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=FullAmount}" />
+                    <DataGridTextColumn Header="Cleared" Binding="{Binding Path=Cleared}" />
+                    <DataGridTextColumn Header="Delivery Date" Binding="{Binding Path=Delivery}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Grid.Column="1" Grid.Row="3"
+                       Grid.ColumnSpan="2"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       Text="{Binding Path=TotalFacturesUnClearedText}"
+                       FontWeight="SemiBold" />
+        </Grid>
+
     </Grid>
 </UserControl>

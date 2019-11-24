@@ -334,6 +334,9 @@ namespace Factures.Models
             }
             Amount = (float)total;
             Currency = currency;
+            CurrencyModel c = new CurrencyModel();
+            c = c.Get(currency);
+            FullAmount = Amount + " " + c.Symbol;
             return total;
         }
     }

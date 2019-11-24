@@ -126,20 +126,40 @@ namespace Factures.DataBase
                 if (element.Equals(last))
                 {
                     if (element.Value[0] == "number")
-                        if (element.Value[1] != "NULL")
-                            query += element.Key + " = " + element.Value[1] + " ";
-                        else
-                            query += element.Key + " IS " + element.Value[1] + " ";
+                    {
+                        switch(element.Value[1])
+                        {
+                            case "NULL":
+                                query += element.Key + " IS " + element.Value[1] + " ";
+                                break;
+                            case "NOT-NULL":
+                                query += element.Key + " IS NOT NULL ";
+                                break;
+                            default:
+                                query += element.Key + " = " + element.Value[1] + " ";
+                                break;
+                        }
+                    }
                     else
                         query += element.Key + " = '" + element.Value[1] + "' ";
                 }
                 else
                 {
                     if (element.Value[0] == "number")
-                        if (element.Value[1] != "NULL")
-                            query += element.Key + " = " + element.Value[1] + " AND ";
-                        else
-                            query += element.Key + " IS " + element.Value[1] + " AND ";
+                    {
+                        switch (element.Value[1])
+                        {
+                            case "NULL":
+                                query += element.Key + " IS " + element.Value[1] + " AND ";
+                                break;
+                            case "NOT-NULL":
+                                query += element.Key + " IS NOT NULL AND ";
+                                break;
+                            default:
+                                query += element.Key + " = " + element.Value[1] + " AND ";
+                                break;
+                        }
+                    }
                     else
                         query += element.Key + " = '" + element.Value[1] + "' AND ";
                 }

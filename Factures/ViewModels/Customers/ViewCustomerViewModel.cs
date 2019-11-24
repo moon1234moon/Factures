@@ -30,6 +30,8 @@ namespace Factures.ViewModels
         private int _receipt_number;
         private SeasonModel _balance_season;
         private CurrencyModel _balance_currency;
+        private Boolean _no_seasoned_factures;
+        private Boolean _no_seasoned_factures_enable;
         #endregion
 
         public ViewCustomerViewModel(CustomerModel customer)
@@ -39,10 +41,34 @@ namespace Factures.ViewModels
         }
 
         #region
+        public Boolean NoSeasonedFactures
+        {
+            get { return _no_seasoned_factures; }
+            set
+            {
+                _no_seasoned_factures = value;
+                NotifyOfPropertyChange(() => NoSeasonedFactures);
+            }
+        }
+
+        public Boolean NoSeasonedFacturesEnable
+        {
+            get { return _no_seasoned_factures_enable; }
+            set
+            {
+                _no_seasoned_factures_enable = value;
+                NotifyOfPropertyChange(() => NoSeasonedFacturesEnable);
+            }
+        }
+
         public BindableCollection<SeasonModel> BalanceSeasons
         {
             get { return _balance_seasons; }
-            set { _balance_seasons = value; }
+            set
+            {
+                _balance_seasons = value;
+                NotifyOfPropertyChange(() => BalanceSeasons);
+            }
         }
 
         public CurrencyModel BalanceCurrency
@@ -72,6 +98,17 @@ namespace Factures.ViewModels
             {
                 _balance_season = value;
                 NotifyOfPropertyChange(() => BalanceSeason);
+                switch(_balance_season.Year)
+                {
+                    case "None":
+                        NoSeasonedFacturesEnable = false;
+                        NoSeasonedFactures = true;
+                        break;
+                    default:
+                        NoSeasonedFactures = false;
+                        NoSeasonedFacturesEnable = true;
+                        break;
+                }
             }
         }
 
@@ -227,6 +264,7 @@ namespace Factures.ViewModels
             FillFactures();
             SetSearches();
             FillReceipts();
+            FillBalanceData();
         }
 
         private void FillSeasons()
@@ -361,6 +399,26 @@ namespace Factures.ViewModels
                 }
             }
         }
+
+        public void FillBalanceData()
+        {
+            SeasonModel season = new SeasonModel();
+            BindableCollection<SeasonModel> ss = season.GiveCollection(season.All());
+            Seasons = new BindableCollection<SeasonModel>();
+            season.Year = "None";
+            season.Id = 0;
+            Seasons.Add(season);
+            season = new SeasonModel();
+            season.Id = 0;
+            season.Year = "All";
+            Seasons.Add(season);
+            foreach (SeasonModel s in ss)
+            {
+                Seasons.Add(s);
+            }
+            BalanceSeasons = Seasons;
+            BalanceSeason = BalanceSeasons[0];
+        }
         #endregion
 
         #region
@@ -427,7 +485,7 @@ namespace Factures.ViewModels
         {
             if (BalanceCurrency != null && BalanceCurrency.Id.ToString() != "0")
             {
-                ActivateItem(new BalanceViewModel(Customer, BalanceSeason, BalanceCurrency));
+                ActivateItem(new BalanceViewModel(Customer, BalanceSeason, BalanceCurrency, NoSeasonedFactures));
             }
             else
                 MessageBox.Show("Select a currency to view the balance in", "Select a Currency", MessageBoxButton.OK, MessageBoxImage.Information);

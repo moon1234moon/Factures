@@ -165,6 +165,12 @@ namespace Factures.Models
         #endregion
 
         #region
+        /**
+         *  Get All factures for this customers if season is null
+         *  Get All factures for this customers that have a season if season is -1
+         *  Get All factures in specific season for this customers if season.Id is not 0
+         *  Get All factures that don't belong to a seson for this customers if season.Id is 0
+         */
         public BindableCollection<FactureModel> GetMyFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
@@ -180,10 +186,18 @@ namespace Factures.Models
                 };
                 if(season != null)
                 {
-                    if (season != 0)
-                        value = new string[2] { "number", season.ToString() };
-                    else
-                        value = new string[2] { "number", "NULL" };
+                    switch(season)
+                    {
+                        case 0:
+                            value = new string[2] { "number", "NULL" };
+                            break;
+                        case -1:
+                            value = new string[2] { "number", "NOT-NULL" };
+                            break;
+                        default:
+                            value = new string[2] { "number", season.ToString() };
+                            break;
+                    }
                     Data.Add(new KeyValuePair<string, string[]>("season_id", value));
                 }
                 factures = fm.GiveCollection(fm.FindByParameters(Data));
@@ -191,6 +205,11 @@ namespace Factures.Models
             return factures;
         }
 
+        /**
+         * Get Clearerd factures for this customers if season is null
+         *  Get Clearerd factures in specific season for this customers if season.Id is not 0
+         *  Get Clearerd factures that don't belong to a seson for this customers if season.Id is 0
+         */
         public BindableCollection<FactureModel> GetMyClearedFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
@@ -219,6 +238,11 @@ namespace Factures.Models
             return factures;
         }
 
+        /**
+         * Get Un-Clearerd factures for this customers if season is null
+         *  Get Un-Clearerd factures in specific season for this customers if season.Id is not 0
+         *  Get Un-Clearerd factures that don't belong to a seson for this customers if season.Id is 0
+         */
         public BindableCollection<FactureModel> GetMyUnClearedFactures(int? season = null)
         {
             BindableCollection<FactureModel> factures = new BindableCollection<FactureModel>();
