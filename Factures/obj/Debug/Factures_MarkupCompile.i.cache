@@ -12,9 +12,9 @@ DEBUG;TRACE
 C:\Users\Hilal\source\repos\Factures\Factures\App.xaml
 291738250667
 
-812076684808
+82326673173
 741756053047
 Views\BalanceView.xaml;Views\BlankView.xaml;Views\ConversionView.xaml;Views\CreateConversionView.xaml;Views\CreateCustomerTypeView.xaml;Views\CreateCustomerView.xaml;Views\CreateFactureView.xaml;Views\CreateProductView.xaml;Views\CreateReceiptView.xaml;Views\CreateSeasonView.xaml;Views\CreateSizeView.xaml;Views\CustomersView.xaml;Views\CustomertypesView.xaml;Views\EditCustomerTypeView.xaml;Views\EditCustomerView.xaml;Views\EditProductView.xaml;Views\EditSeasonView.xaml;Views\EditSizeView.xaml;Views\FactureView.xaml;Views\ProductsView.xaml;Views\ReceiptView.xaml;Views\SeasonView.xaml;Views\ShellView.xaml;Views\SizeView.xaml;Views\ViewConversionView.xaml;Views\ViewCustomerView.xaml;Views\ViewFactureView.xaml;Views\ViewImageView.xaml;Views\ViewReceiptView.xaml;
 
-False
+True
 

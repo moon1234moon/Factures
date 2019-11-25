@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Factures.Models
 {
@@ -25,6 +26,7 @@ namespace Factures.Models
         private string _details;
         private int? _facture;
         private string _cheque;
+        private string _full_amount_string;
         #endregion
 
         public ReceiptModel()
@@ -43,6 +45,12 @@ namespace Factures.Models
         }
 
         #region
+        public string FullAmount
+        {
+            get { return _full_amount_string; }
+            set { _full_amount_string = value; }
+        }
+
         public string Cheque
         {
             get { return _cheque; }
@@ -328,6 +336,28 @@ namespace Factures.Models
         {
             this.DeleteThis(this.Primaries());
             return true;
+        }
+        #endregion
+
+        #region
+        public void SetFullAmount(int currency)
+        {
+            decimal amount = (decimal)Amount;
+            if (currency != Currency)
+            {
+                try
+                {
+                    ConversionModel cm = new ConversionModel();
+                    amount = cm.Convert((decimal)Amount, (int)Currency, currency);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            CurrencyModel c = new CurrencyModel();
+            c = c.Get(currency);
+            FullAmount = amount + " " + c.Symbol;
         }
         #endregion
 

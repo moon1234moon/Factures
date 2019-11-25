@@ -11,15 +11,30 @@ namespace Factures.ViewModels
 {
     public class BalanceViewModel : Conductor<object>
     {
+        /*
+         * Variables
+         */
         #region
-        private Boolean _seasoned_factures;
+        /*
+         * Titles and results variables
+         */
+        #region
         private string _title;
         private string _total_facturs_un_cleared_text;
         private string _total_facturs_cleared_text;
+        private BindableCollection<ResultModel> _result;
+        #endregion
+
+        /*
+         * Sums and totals variables
+         */
+        #region
+        private float _remainder;
         private float _sum_factures_uncleared;
         private float _sum_factures_cleared;
         private float _sum_receipts;
-        private float _remainder;
+        private float _sum_receipts_on_credit;
+        private float _sum_receipts_on_facture;
         private float _total_factures_no_season_cleared;
         private float _total_factures_no_season_un_cleared;
         private float _total_factures_cleared;
@@ -30,10 +45,16 @@ namespace Factures.ViewModels
         private float _total_receipt_no_season;
         private float _total_receipt_no_season_no_factures;
         private float _total_receipt_no_season_with_factures;
+        #endregion
+
+        /*
+         * Collections and main variables
+         */
+        #region
+        private Boolean _seasoned_factures;
         private CurrencyModel _currency;
         private SeasonModel _season;
         private CustomerModel _customer;
-        private List<int?> _facture_ids_with_receipts;
         private BindableCollection<FactureModel> _facture;
         private BindableCollection<ReceiptModel> _receipts;
         private BindableCollection<FactureModel> _factures_list;
@@ -49,7 +70,12 @@ namespace Factures.ViewModels
         private BindableCollection<ReceiptModel> _receipts_no_season_no_factures = new BindableCollection<ReceiptModel>();
         private BindableCollection<ReceiptModel> _receipts_no_season_with_factures = new BindableCollection<ReceiptModel>();
         #endregion
+        #endregion
 
+        /*
+         * Constructor
+         */
+        #region
         public BalanceViewModel(CustomerModel customer = null, SeasonModel season = null, CurrencyModel currency = null, Boolean seasoned_factures = true)
         {
             SeasondFactures = seasoned_factures;
@@ -58,18 +84,16 @@ namespace Factures.ViewModels
             Currency = currency;
             SetBalance();
         }
+        #endregion
 
+        /*
+         * Properties
+         */
         #region
-        public Boolean SeasondFactures
-        {
-            get { return _seasoned_factures; }
-            set
-            {
-                _seasoned_factures = value;
-                NotifyOfPropertyChange(() => SeasondFactures);
-            }
-        }
-
+        /*
+         * Titles and results properties
+         */
+        #region
         public string TotalFacturesUnClearedText
         {
             get { return _total_facturs_un_cleared_text; }
@@ -100,6 +124,31 @@ namespace Factures.ViewModels
             }
         }
 
+        public BindableCollection<ResultModel> Result
+        {
+            get { return _result; }
+            set
+            {
+                _result = value;
+                NotifyOfPropertyChange(() => Result);
+            }
+        }
+        #endregion
+
+        /*
+         * Sums and Totals properties
+         */
+        #region
+        public float Remainder
+        {
+            get { return _remainder; }
+            set
+            {
+                _remainder = value;
+                NotifyOfPropertyChange(() => Remainder);
+            }
+        }
+
         public float SumFacturesUncleared
         {
             get { return _sum_factures_uncleared; }
@@ -120,6 +169,26 @@ namespace Factures.ViewModels
             }
         }
 
+        public float SumReceiptsOnCredit
+        {
+            get { return _sum_receipts_on_credit; }
+            set
+            {
+                _sum_receipts_on_credit = value;
+                NotifyOfPropertyChange(() => SumReceiptsOnCredit);
+            }
+        }
+
+        public float SumReceiptsOnFacture
+        {
+            get { return _sum_receipts_on_facture; }
+            set
+            {
+                _sum_receipts_on_facture = value;
+                NotifyOfPropertyChange(() => SumReceiptsOnFacture);
+            }
+        }
+
         public float SumReceipts
         {
             get { return _sum_receipts; }
@@ -128,16 +197,6 @@ namespace Factures.ViewModels
                 _sum_receipts = value;
                 NotifyOfPropertyChange(() => SumReceipts);
             }
-        }
-
-        public float Remainder
-        {
-            get { return _remainder; }
-            set
-            {
-                _remainder = value;
-                NotifyOfPropertyChange(() => Remainder);
-            }    
         }
 
         public float TotalReceiptSeason
@@ -239,14 +298,19 @@ namespace Factures.ViewModels
                 NotifyOfPropertyChange(() => TotalFacturesNoSeasonUnCleared);
             }
         }
+        #endregion
 
-        public List<int?> FactureIdsWithReceipts
+        /*
+         * Collections and main properites
+         */
+        #region
+        public Boolean SeasondFactures
         {
-            get { return _facture_ids_with_receipts; }
+            get { return _seasoned_factures; }
             set
             {
-                _facture_ids_with_receipts = value;
-                NotifyOfPropertyChange(() => FactureIdsWithReceipts);
+                _seasoned_factures = value;
+                NotifyOfPropertyChange(() => SeasondFactures);
             }
         }
 
@@ -257,6 +321,16 @@ namespace Factures.ViewModels
             {
                 _receipts_no_season_no_factures = value;
                 NotifyOfPropertyChange(() => ReceiptsNoSeasonsNoFactures);
+            }
+        }
+
+        public BindableCollection<ReceiptModel> ReceiptsNoSeasonsWithFactures
+        {
+            get { return _receipts_no_season_with_factures; }
+            set
+            {
+                _receipts_no_season_with_factures = value;
+                NotifyOfPropertyChange(() => ReceiptsNoSeasonsWithFactures);
             }
         }
 
@@ -410,7 +484,11 @@ namespace Factures.ViewModels
             }
         }
         #endregion
+        #endregion
 
+        /*
+         * Main funtions
+         */
         #region
         public void SetBalance()
         {
@@ -431,27 +509,6 @@ namespace Factures.ViewModels
             }
         }
 
-        public void SetTitle()
-        {
-            switch(Season.Id)
-            {
-                case 0:
-                    switch(Season.Year)
-                    {
-                        case "None":
-                            Title = "Balance for " + Customer.Name + " for factures and receipts that don't have a season";
-                            break;
-                        default:
-                            Title = "Balance for " + Customer.Name + " for factures and receipts in all seasons";
-                            break;
-                    }
-                    break;
-                default:
-                    Title = "Balance for " + Customer.Name + " for factures and receipts in season " + Season.Year;
-                    break;
-            }
-        }
-
         public void ShowResult()
         {
             string message = "The balance for customer " + Customer.Name;
@@ -462,13 +519,94 @@ namespace Factures.ViewModels
             message += " is complete";
             MessageBox.Show(message, "Balance Calculation", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        #endregion
 
+        /*
+         * Computing funtions
+         */
+        #region
         public void Compute()
         {
-            switch(Season.Id)
+            /*
+             * Add Factures totals to set main sums
+             */
+            ComputeFactures();
+
+            /*
+             * Add Recipt totals to set main sums
+             */
+            ComputeReceipts();
+
+            /*
+             * Compute Result
+             */
+            ComputeResult();
+
+            /*
+             * Print Result
+             */
+            PrintResult();
+        }
+
+        public void PrintResult()
+        {
+            /*
+             * Print Facture Amounts
+             */
+            TotalFacturesClearedText = "Total amount = " + SumFacturesCleared + " " + Currency.Symbol;
+            TotalFacturesUnClearedText = "Total amount = " + SumFacturesUncleared + " " + Currency.Symbol;
+
+            List<ResultModel> results = new List<ResultModel> ();
+            ResultModel result = new ResultModel("Sum of unpaid factures", SumFacturesUncleared + " " + Currency.Symbol);
+            results.Add(result);
+            result = new ResultModel("Sum of receipts paid on credit", SumReceiptsOnCredit + " " + Currency.Symbol);
+            results.Add(result);
+            result = new ResultModel("Remainder", Remainder + " " + Currency.Symbol);
+            results.Add(result);
+            Result = new BindableCollection<ResultModel>(results);
+        }
+
+        public void ComputeResult()
+        {
+            /*
+             * Remainder = Amount Needed from Customer
+             * Remainder = Sum-Of-Factures-Un-Paid - Sum-Of-Receipts-Paid-On-Credit;
+             */
+            Remainder = SumFacturesUncleared - SumReceiptsOnCredit;
+        }
+
+        public void ComputeReceipts()
+        {
+
+            /*
+             * Add paid amount on credit
+             * With Season and With no Season
+             * 
+             * Save
+             */
+            SumReceiptsOnCredit = TotalReceiptNoSeasonNoFacture + TotalReceiptSeasonNoFacture;
+
+
+            /*
+             * Add paid amount on facture
+             * With Season and With no Season
+             * 
+             * Save
+             */
+            SumReceiptsOnFacture = TotalReceiptSeasonNoFacture + TotalReceiptSeasonWithFacture;
+
+            /*
+             * Add Whole paid amount and Save
+             */
+            SumReceipts = SumReceiptsOnCredit + SumReceiptsOnFacture;
+        }
+
+        public void ComputeFactures()
+        {
+            switch (Season.Id)
             {
                 case 0:
-                    switch(Season.Year)
+                    switch (Season.Year)
                     {
                         case "None":
                             SumFacturesUncleared = TotalFacturesNoSeasonUnCleared;
@@ -487,90 +625,126 @@ namespace Factures.ViewModels
                     SumFacturesCleared = TotalFacturesCleared;
                     break;
             }
+        }
+        #endregion
 
-            //SetTextBlocks
-            TotalFacturesClearedText = "Total amount = " + SumFacturesCleared + " " + Currency.Symbol;
-            TotalFacturesUnClearedText = "Total amount = " + SumFacturesUncleared + " " + Currency.Symbol;
-
-            // Receipts Summation
-            SumReceipts = TotalReceiptSeason + TotalReceiptNoSeason;
-
-            // Calculation
-            // Remainder = SumFactures - SumReceipts;
+        /*
+         * Setting variables and computing totals funtions
+         */
+        #region
+        public void SetTitle()
+        {
+            switch (Season.Id)
+            {
+                case 0:
+                    switch (Season.Year)
+                    {
+                        case "None":
+                            Title = "Balance for " + Customer.Name + " for factures and receipts that don't have a season";
+                            break;
+                        default:
+                            Title = "Balance for " + Customer.Name + " for factures and receipts in all seasons";
+                            break;
+                    }
+                    break;
+                default:
+                    Title = "Balance for " + Customer.Name + " for factures and receipts in season " + Season.Year;
+                    break;
+            }
         }
 
         public void SetReceipts()
         {
+            /*
+             * Variables
+             */
+            #region
+            BindableCollection<ReceiptModel> receipts = new BindableCollection<ReceiptModel>();
             BindableCollection<ReceiptModel> receipts_season = new BindableCollection<ReceiptModel>();
-            BindableCollection<ReceiptModel> receipts_season_no_factures = new BindableCollection<ReceiptModel>();
-            BindableCollection<ReceiptModel> receipts_season_with_factures = new BindableCollection<ReceiptModel>();
             BindableCollection<ReceiptModel> receipts_no_season = new BindableCollection<ReceiptModel>();
-            BindableCollection<ReceiptModel> receipts_no_season_no_factures = new BindableCollection<ReceiptModel>();
-            BindableCollection<ReceiptModel> receipts_no_season_with_factures = new BindableCollection<ReceiptModel>();
+            ReceiptsSeasons = new BindableCollection<ReceiptModel>();
+            ReceiptsNoSeasons = new BindableCollection<ReceiptModel>();
+            ReceiptsSeasonsNoFactures = new BindableCollection<ReceiptModel>();
+            ReceiptsSeasonsWithFactures = new BindableCollection<ReceiptModel>();
+            ReceiptsNoSeasonsNoFactures = new BindableCollection<ReceiptModel>();
+            ReceiptsNoSeasonsWithFactures = new BindableCollection<ReceiptModel>();
+            #endregion
+
+            /*
+             * Filling Receipts
+             */
             if (Season != null)
-                receipts_season = Customer.GetMyReceipts(Season.Id);
-            receipts_no_season = Customer.GetMyReceipts(0);
-            List<int?> receipt_facture_ids = new List<int?>();
-            List<int?> facture_ids = new List<int?>();
-            for (int i = 0; i < FacturesList.Count; i++)
             {
-                int? Id = FacturesList[i].GetReceipt();
-                if (Id != null)
+                switch (Season.Id)
                 {
-                    receipt_facture_ids.Add(Id);
-                    facture_ids.Add(FacturesList[i].Id);
-                }
-            }
-            for (int i = 0; i < FacturesSandalone.Count; i++)
-            {
-                int? Id = FacturesSandalone[i].GetReceipt();
-                if (Id != null)
-                {
-                    receipt_facture_ids.Add(Id);
-                    facture_ids.Add(FacturesSandalone[i].Id);
-                }
-            }
-
-            bool added = false;
-            foreach(ReceiptModel receipt in receipts_season)
-            {
-                added = false;
-                foreach(int? receipt_id in receipt_facture_ids)
-                {
-                    if(receipt.Id == receipt_id)
-                    {
-                        receipts_season_with_factures.Add(receipt);
-                        added = true;
-                    }
-                }
-                if(!added)
-                {
-                    receipts_season_no_factures.Add(receipt);
-                }
-            }
-            foreach (ReceiptModel receipt in receipts_no_season)
-            {
-                added = false;
-                foreach (int? receipt_id in receipt_facture_ids)
-                {
-                    if (receipt.Id == receipt_id)
-                    {
-                        receipts_no_season_with_factures.Add(receipt);
-                        added = true;
-                    }
-                }
-                if (!added)
-                {
-                    receipts_no_season_no_factures.Add(receipt);
+                    case 0:
+                        switch (Season.Year)
+                        {
+                            case "None":
+                                ReceiptsNoSeasons = Customer.GetMyReceipts(Currency.Id, 0);
+                                receipts_no_season = Customer.GetMyReceipts(Currency.Id, 0);
+                                break;
+                            case "All":
+                                ReceiptsSeasons = Customer.GetMyReceipts(Currency.Id, -1);
+                                receipts_season = Customer.GetMyReceipts(Currency.Id, -1);
+                                switch (SeasondFactures)
+                                {
+                                    case true:
+                                        ReceiptsNoSeasons = Customer.GetMyReceipts(Currency.Id, 0);
+                                        receipts_no_season = Customer.GetMyReceipts(Currency.Id, 0);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        ReceiptsSeasons = Customer.GetMyReceipts(Currency.Id, Season.Id);
+                        receipts_season = Customer.GetMyReceipts(Currency.Id, Season.Id);
+                        switch (SeasondFactures)
+                        {
+                            case true:
+                                ReceiptsNoSeasons = Customer.GetMyReceipts(Currency.Id, 0);
+                                receipts_no_season = Customer.GetMyReceipts(Currency.Id, 0);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                 }
             }
 
+            /*
+             * Fill receiprs vaious variables
+             */
+            foreach(ReceiptModel receipt in ReceiptsSeasons)
+            {
+                string facture = receipt.Facture.ToString();
+                if (facture == "")
+                    ReceiptsSeasonsNoFactures.Add(receipt);
+                else
+                    ReceiptsSeasonsWithFactures.Add(receipt);
+            }
+            foreach (ReceiptModel receipt in ReceiptsNoSeasons)
+            {
+                string facture = receipt.Facture.ToString();
+                if (facture == "")
+                    ReceiptsNoSeasonsNoFactures.Add(receipt);
+                else
+                    ReceiptsNoSeasonsWithFactures.Add(receipt);
+            }
+
+            receipts = ReceiptsSeasons;
+            foreach (ReceiptModel receipt in ReceiptsNoSeasons)
+            {
+                receipts.Add(receipt);
+            }
+            Receipts = receipts;
             ReceiptsSeasons = receipts_season;
             ReceiptsNoSeasons = receipts_no_season;
-            ReceiptsSeasonsWithFactures = receipts_season_with_factures;
-            ReceiptsSeasonsNoFactures = receipts_season_no_factures;
-            ReceiptsNoSeasonsNoFactures = receipts_no_season_no_factures;
-            FactureIdsWithReceipts = facture_ids;
 
             TotalReceiptSeason = AddReceiptsAmount(ReceiptsSeasons, Currency.Id);
             TotalReceiptSeasonNoFacture = AddReceiptsAmount(ReceiptsSeasonsNoFactures, Currency.Id);
@@ -680,6 +854,9 @@ namespace Factures.ViewModels
         }
         #endregion
 
+        /*
+         * Addition funtions
+         */
         #region
         public float AddReceiptsAmount(BindableCollection<ReceiptModel> receipts, int currency)
         {

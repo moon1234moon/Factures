@@ -317,7 +317,13 @@ namespace Factures.Models
         #endregion
 
         #region
-        public BindableCollection<ReceiptModel> GetMyReceipts(int? season = null)
+        /*
+         * Get All Receipts for this customer if season is null
+         * Get All Receipts for this customer in a certain season if season is not null different from 0  and -1
+         * Get All Receipts for this customer that don't have a season if season is 0
+         * Get All Receipts for this customer that have a season if season is -1
+         */
+        public BindableCollection<ReceiptModel> GetMyReceipts(int? currency = null, int? season = null)
         {
             BindableCollection<ReceiptModel> receipts = new BindableCollection<ReceiptModel>();
             if (this.Id == 0)
@@ -330,16 +336,29 @@ namespace Factures.Models
                 {
                     new KeyValuePair<string, string[]>("customer_id", value)
                 };
+                switch(season)
+                {
+                    case null:
+                        break;
+                    case -1:
+                        value = new string[2] { "number", "NOT-NULL" };
+                        break;
+                    case 0:
+                        value = new string[2] { "number", "NULL" };
+                        break;
+                    default:
+                        value = new string[2] { "number", season.ToString() };
+                        break;
+                }
                 if (season != null)
                 {
-                    if (season != 0)
-                        value = new string[2] { "number", season.ToString() };
-                    else
-                        value = new string[2] { "number", "NULL" };
                     Data.Add(new KeyValuePair<string, string[]>("season_id", value));
                 }
                 receipts = receipt.GiveCollection(receipt.FindByParameters(Data));
             }
+            if (currency != null)
+                foreach (ReceiptModel receipt in receipts)
+                    receipt.SetFullAmount((int)currency);
             return receipts;
         }
         #endregion

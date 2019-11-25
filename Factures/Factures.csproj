@@ -87,6 +87,7 @@
     <Compile Include="Models\ProductImageModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ReceiptModel.cs" />
+    <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\SeasonModel.cs" />
     <Compile Include="Models\SizeModel.cs" />
     <Compile Include="ViewModels\BalanceViewModel.cs" />

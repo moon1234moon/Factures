@@ -252,8 +252,10 @@ namespace Factures.ViewModels
         private void FillData()
         {
             CustomerName = Customer.Id + " - " + Customer.Name;
-            List<CustomerModel> customer_bound = new List<CustomerModel>();
-            customer_bound.Add(Customer);
+            List<CustomerModel> customer_bound = new List<CustomerModel>
+            {
+                Customer
+            };
             CustomerBound = new BindableCollection<CustomerModel>(customer_bound);
             Products = Customer.GetMyProducts();
             CurrencyModel currency = new CurrencyModel();
@@ -274,8 +276,10 @@ namespace Factures.ViewModels
             Seasons = new BindableCollection<SeasonModel>();
             season.Year = "All";
             Seasons.Add(season);
-            season = new SeasonModel();
-            season.Year = "None";
+            season = new SeasonModel
+            {
+                Year = "None"
+            };
             Seasons.Add(season);
             foreach (SeasonModel s in ss)
             {
@@ -394,7 +398,7 @@ namespace Factures.ViewModels
                             Receipts = Customer.GetMyReceipts();
                         break;
                     default:
-                        Receipts = Customer.GetMyReceipts(FacturesSeason.Id);
+                        Receipts = Customer.GetMyReceipts(ReceiptSeason.Id);
                         break;
                 }
             }
@@ -408,9 +412,11 @@ namespace Factures.ViewModels
             season.Year = "None";
             season.Id = 0;
             Seasons.Add(season);
-            season = new SeasonModel();
-            season.Id = 0;
-            season.Year = "All";
+            season = new SeasonModel
+            {
+                Id = 0,
+                Year = "All"
+            };
             Seasons.Add(season);
             foreach (SeasonModel s in ss)
             {
@@ -434,8 +440,10 @@ namespace Factures.ViewModels
 
         public void CreateProduct()
         {
-            ProductModel product = new ProductModel();
-            product.Customer = Customer.Id;
+            ProductModel product = new ProductModel
+            {
+                Customer = Customer.Id
+            };
             ActivateItem(new CreateProductViewModel(product));
         }
         #endregion
@@ -448,8 +456,10 @@ namespace Factures.ViewModels
 
         public void CreateFacture()
         {
-            FactureModel facture = new FactureModel();
-            facture.Customer = Customer.Id;
+            FactureModel facture = new FactureModel
+            {
+                Customer = Customer.Id
+            };
             ActivateItem(new CreateFactureViewModel(facture));
         }
 
@@ -469,8 +479,10 @@ namespace Factures.ViewModels
         #region
         public void CreateReceipt()
         {
-            ReceiptModel receipt = new ReceiptModel();
-            receipt.Customer = Customer.Id;
+            ReceiptModel receipt = new ReceiptModel
+            {
+                Customer = Customer.Id
+            };
             ActivateItem(new CreateReceiptViewModel(receipt));
         }
 

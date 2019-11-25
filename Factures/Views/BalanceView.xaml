@@ -76,6 +76,7 @@
             </DataGrid>
         </Grid>
 
+        <!-- Row 2 -->
         <!-- Row 2 / Column 1 - All Factures Cleared -->
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -126,7 +127,6 @@
                        Text="{Binding Path=TotalFacturesClearedText}"
                        FontWeight="SemiBold" />
         </Grid>
-
         <!-- Row 2 / Column 2 - All Factures Un-Cleared -->
         <Grid Grid.Column="2" Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -178,5 +178,172 @@
                        FontWeight="SemiBold" />
         </Grid>
 
+        <!--Row 3 - All Receipts -->
+        <Grid Grid.Column="1" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                All Receipts Reviewed:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="Receipts"
+                       ItemsSource="{Binding Receipts}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                    <DataGridTextColumn Header="Number" Binding="{Binding Path=Number}" />
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=FullAmount}" />
+                    <DataGridTextColumn Header="Season" Binding="{Binding Path=SeasonYear}" />
+                    <DataGridTextColumn Header="Delivery Date" Binding="{Binding Path=Delivery}" />
+                    <DataGridTextColumn Header="Facture" Binding="{Binding Path=Facture}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!--Row 4  -->
+        <!-- Row 4 / Column 1 - All Seasoned receipts -->
+        <Grid Grid.Column="1" Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                All Receipts Having a season:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="SeasondReceipts"
+                       ItemsSource="{Binding ReceiptsSeasons}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                    <DataGridTextColumn Header="Number" Binding="{Binding Path=Number}" />
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=FullAmount}" />
+                    <DataGridTextColumn Header="Season" Binding="{Binding Path=SeasonYear}" />
+                    <DataGridTextColumn Header="Delivery Date" Binding="{Binding Path=Delivery}" />
+                    <DataGridTextColumn Header="Facture" Binding="{Binding Path=Facture}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <!-- Row 4 / Column 1 - All Un-Seasoned receipts -->
+        <Grid Grid.Column="2" Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                All Receipts With no Season:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="UnSeasondReceipts"
+                       ItemsSource="{Binding ReceiptsNoSeasons}"
+                       CanUserAddRows="False" 
+                       MinWidth="100" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" />
+                    <DataGridTextColumn Header="Number" Binding="{Binding Path=Number}" />
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=FullAmount}" />
+                    <DataGridTextColumn Header="Season" Binding="{Binding Path=SeasonYear}" />
+                    <DataGridTextColumn Header="Delivery Date" Binding="{Binding Path=Delivery}" />
+                    <DataGridTextColumn Header="Facture" Binding="{Binding Path=Facture}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!--Row 5 - Result -->
+        <Grid Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Margin="0, 0, 0, 15"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                Result:
+            </TextBlock>
+            <DataGrid  Grid.Column="1" Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       AlternatingRowBackground="Gray" 
+                       x:Name="Result"
+                       ItemsSource="{Binding Result}"
+                       CanUserAddRows="False" 
+                       MinWidth="750" MinHeight="50" 
+                       FontFamily="Times New Roman"
+                       AutoGenerateColumns="False" 
+                       IsReadOnly="True" FontSize="20"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Title" Binding="{Binding Path=Name}" />
+                    <DataGridTextColumn Header="Value" Binding="{Binding Path=Result}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>
